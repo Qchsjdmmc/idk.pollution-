@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardians of the Deep | Ocean Pollution Awareness</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0a3651',
+                        },
+                        cyanGlow: '#00f2fe',
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wave-slow': 'wave 15s linear infinite',
+                        'wave-fast': 'wave 10s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        wave: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Glassmorphism & Fluid Styling */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px -15px rgba(2, 132, 199, 0.15);
+        }
+
+        .glass-dark-panel {
+            background: rgba(7, 89, 133, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(125, 211, 252, 0.3);
+            box-shadow: 0 20px 40px -15px rgba(2, 132, 199, 0.3);
+        }
+
+        /* Flowing Liquid Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #0284c7 0%, #00f2fe 50%, #0369a1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-hero-bg {
+            background: linear-gradient(180deg, #e0f2fe 0%, #38bdf8 45%, #0284c7 85%, #075985 100%);
+        }
+
+        /* Canvas particles layer */
+        #ocean-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-ocean-50 text-ocean-900 font-sans overflow-x-hidden antialiased">
+
+    <!-- Canvas for Floating Bubbles Animation -->
+    <canvas id="ocean-canvas"></canvas>
+
+    <!-- Top Floating Navbar -->
+    <header class="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-6xl z-50 transition-all duration-300">
+        <nav class="glass-panel rounded-full px-6 py-3 flex items-center justify-between shadow-lg">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-ocean-400 rounded-full p-1">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-ocean-500 to-cyanGlow flex items-center justify-center text-white text-xl shadow-md group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fa-solid font-bold fa-water"></i>
+                </div>
+                <span class="font-outfit font-extrabold text-lg sm:text-xl tracking-tight text-ocean-900">
+                    BLUE<span class="text-ocean-500">HORIZON</span>
+                </span>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center gap-8 font-semibold text-sm text-ocean-800">
+                <a href="#narrative" class="hover:text-ocean-500 transition-colors py-2 px-1">The Crisis</a>
+                <a href="#timeline" class="hover:text-ocean-500 transition-colors py-2 px-1">Ripple Effect</a>
+                <a href="#actions" class="hover:text-ocean-500 transition-colors py-2 px-1">Take Action</a>
+            </div>
+
+            <!-- Instagram Redirect Button -->
+            <a href="https://www.instagram.com/iqk.oceanpollution?xtok=ODZ0dzN6dzM4dmxz&utm_source=qr" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="relative inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-bold text-white transition-all duration-300 bg-gradient-to-r from-pink-500 via-purple-600 to-ocean-500 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-400 gap-2">
+                <i class="fa-brands fa-instagram text-base"></i>
+                <span>Join @iqk.oceanpollution</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen pt-32 pb-24 flex items-center justify-center gradient-hero-bg overflow-hidden">
+        <!-- Floating Ambient Elements -->
+        <div class="absolute top-1/4 left-10 w-48 h-48 bg-cyanGlow opacity-20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/3 right-10 w-64 h-64 bg-ocean-300 opacity-30 rounded-full blur-3xl animate-float-delayed"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold text-xs sm:text-sm mb-6 shadow-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyanGlow animate-pulse"></span>
+                Protecting Earth's Greatest Wonder
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="font-outfit font-black text-4xl sm:text-6xl md:text-7xl leading-tight tracking-tight mb-6 drop-shadow-sm">
+                Our Oceans Are Choking.<br />
+                <span class="text-cyanGlow underline decoration-cyanGlow/40 decoration-wavy underline-offset-8">You Can Be The Cure.</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-ocean-50 font-light leading-relaxed mb-10">
+                Every minute, the equivalent of one garbage truck of plastic enters our seas. Discover the profound impact on marine life and help us turn the tide together.
+            </p>
+
+            <!-- Hero Action Area (Separated to prevent overlapping) -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 max-w-lg mx-auto">
+                <a href="#narrative" 
+                   class="w-full sm:w-auto px-8 py-4 bg-white text-ocean-700 hover:bg-ocean-50 font-bold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5 text-center">
+                    Explore The Impact
+                </a>
+                
+                <a href="https://www.instagram.com/iqk.oceanpollution?xtok=ODZ0dzN6dzM4dmxz&utm_source=qr" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="w-full sm:w-auto px-8 py-4 bg-ocean-900/40 hover:bg-ocean-900/60 text-white border border-white/40 font-bold rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-instagram text-lg"></i>
+                    Follow Instagram
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-3 gap-6 pt-10 border-t border-white/20 max-w-3xl mx-auto">
+                <div>
+                    <div class="font-outfit font-extrabold text-3xl sm:text-4xl text-cyanGlow">11M+</div>
+                    <div class="text-xs sm:text-sm text-ocean-100 mt-1">Tons of plastic/year</div>
+                </div>
+                <div>
+                    <div class="font-outfit font-extrabold text-3xl sm:text-4xl text-cyanGlow">100,000+</div>
+                    <div class="text-xs sm:text-sm text-ocean-100 mt-1">Marine mammals lost</div>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <div class="font-outfit font-extrabold text-3xl sm:text-4xl text-cyanGlow">5.25T</div>
+                    <div class="text-xs sm:text-sm text-ocean-100 mt-1">Microplastic pieces</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organic Wave Transition Bottom -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-16 sm:h-24 md:h-32" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.92,152.47,130.8,223,120c32.74-5,65-17.2,98.39-63.56Z" fill="#f0f9ff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- FLOWING NARRATIVE SECTION (Organic non-block layout) -->
+    <section id="narrative" class="py-20 px-6 max-w-6xl mx-auto relative z-20">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="font-outfit font-black text-3xl sm:text-5xl text-ocean-900 mb-4">
+                The Floating Silent Threat
+            </h2>
+            <div class="w-24 h-1.5 bg-gradient-to-r from-ocean-400 to-cyanGlow mx-auto rounded-full mb-6"></div>
+            <p class="text-ocean-700 text-base sm:text-lg leading-relaxed">
+                Marine pollution isn't just floating visible trash; it is a complex ecological crisis infiltrating deep sea trenches, food webs, and coastal habitats worldwide.
+            </p>
+        </div>
+
+        <!-- Fluid Asymmetric Visual Flow -->
+        <div class="space-y-24">
+            <!-- Flow Item 1 -->
+            <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+                <div class="w-full lg:w-1/2 space-y-5">
+                    <div class="inline-block px-3 py-1 rounded-full bg-ocean-100 text-ocean-600 font-bold text-xs uppercase tracking-wider">
+                        01 / Ghost Nets & Entanglement
+                    </div>
+                    <h3 class="font-outfit font-bold text-2xl sm:text-3xl text-ocean-900">
+                        Derelict Gear: The Unseen Predators
+                    </h3>
+                    <p class="text-ocean-700 leading-relaxed">
+                        Abandoned commercial fishing gear—known as "ghost nets"—accounts for nearly 10% of all marine debris. Left floating indefinitely, these nets continually capture sea turtles, dolphins, whales, and seals in a deadly cycle of non-stop entrapment.
+                    </p>
+                    <ul class="space-y-3 pt-2 text-ocean-800">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-ocean-500"></i>
+                            <span>Takes up to 600 years to decompose in seawater</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-ocean-500"></i>
+                            <span>Destroys coral reefs by smothering fragile structures</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-cyanGlow to-ocean-400 rounded-3xl blur-2xl opacity-30"></div>
+                    <div class="relative glass-panel rounded-3xl p-8 sm:p-10 shadow-2xl border border-white">
+                        <div class="text-5xl text-ocean-500 mb-6">
+                            <i class="fa-solid fa-fish-fins"></i>
+                        </div>
+                        <blockquote class="font-outfit text-xl text-ocean-900 font-semibold italic mb-4">
+                            "Over 640,000 tons of ghost gear are left in our oceans every single year."
+                        </blockquote>
+                        <span class="text-xs font-bold uppercase tracking-widest text-ocean-600">UN Environmental Programme</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flow Item 2 (Reverse Direction) -->
+            <div class="flex flex-col lg:flex-row-reverse items-center gap-10 lg:gap-16">
+                <div class="w-full lg:w-1/2 space-y-5">
+                    <div class="inline-block px-3 py-1 rounded-full bg-ocean-100 text-ocean-600 font-bold text-xs uppercase tracking-wider">
+                        02 / Microplastics & Chemical Toxins
+                    </div>
+                    <h3 class="font-outfit font-bold text-2xl sm:text-3xl text-ocean-900">
+                        The Invisible Poison in the Marine Food Web
+                    </h3>
+                    <p class="text-ocean-700 leading-relaxed">
+                        Under sunlight and ocean currents, larger plastics break down into microscopic fragments under 5mm in size. Marine creatures mistake these particles for food, allowing toxic pollutants to bioaccumulate all the way up to human dinner plates.
+                    </p>
+                    <ul class="space-y-3 pt-2 text-ocean-800">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-ocean-500"></i>
+                            <span>Found in 100% of sea turtle species surveyed</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-ocean-500"></i>
+                            <span>Absorbs hazardous organic pollutants from seawater</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-ocean-400 to-ocean-600 rounded-3xl blur-2xl opacity-20"></div>
+                    <div class="relative glass-panel rounded-3xl p-8 sm:p-10 shadow-2xl border border-white">
+                        <div class="text-5xl text-ocean-500 mb-6">
+                            <i class="fa-solid fa-flask-vial"></i>
+                        </div>
+                        <blockquote class="font-outfit text-xl text-ocean-900 font-semibold italic mb-4">
+                            "By 2050, plastic in the ocean is projected to outweigh all fish by weight."
+                        </blockquote>
+                        <span class="text-xs font-bold uppercase tracking-widest text-ocean-600">World Economic Forum</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RIPPLE EFFECT: FLOWING VERTICAL TIMELINE -->
+    <section id="timeline" class="py-24 bg-gradient-to-b from-ocean-50 via-ocean-100 to-ocean-200 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <span class="text-ocean-600 font-bold text-xs uppercase tracking-widest">Interactive Pathway</span>
+                <h2 class="font-outfit font-black text-3xl sm:text-5xl text-ocean-900 mt-2 mb-4">
+                    The Marine Plastic Journey
+                </h2>
+                <p class="text-ocean-700 text-base sm:text-lg">
+                    Click through the stages below to see how land waste ripples outward into deep ocean ecosystems.
+                </p>
+            </div>
+
+            <!-- Timeline Items Container with connecting glowing path -->
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-ocean-300 via-ocean-500 to-ocean-700 -translate-x-1/2 rounded-full"></div>
+
+                <div class="space-y-12 md:space-y-20">
+                    <!-- Stage 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center group cursor-pointer" onclick="toggleTimeline(1)">
+                        <div class="w-full md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <span class="inline-block px-3 py-1 bg-white text-ocean-600 font-bold text-xs rounded-full shadow-sm mb-2">Stage 1</span>
+                            <h3 class="font-outfit font-bold text-xl text-ocean-900">Urban Runoff & Improper Disposal</h3>
+                            <p class="text-sm text-ocean-700 mt-2">Single-use plastics leave city streets and storm drains, washed away by rainfall into rivers.</p>
+                        </div>
+                        <!-- Central Bubble -->
+                        <div class="w-12 h-12 rounded-full bg-white border-4 border-ocean-400 text-ocean-600 flex items-center justify-center font-black text-lg shadow-lg z-20 group-hover:scale-125 group-hover:border-cyanGlow group-hover:bg-ocean-500 group-hover:text-white transition-all duration-300">
+                            1
+                        </div>
+                        <div class="w-full md:w-1/2 md:pl-12 mt-4 md:mt-0">
+                            <div id="timeline-detail-1" class="glass-panel p-6 rounded-2xl border-l-4 border-l-ocean-500 shadow-md">
+                                <p class="text-xs text-ocean-800 leading-relaxed font-medium">
+                                    <i class="fa-solid fa-circle-info text-ocean-500 mr-1"></i> Over 80% of ocean plastic originates from land-based sources due to inadequate waste management infrastructure.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center group cursor-pointer" onclick="toggleTimeline(2)">
+                        <div class="w-full md:w-1/2 md:pl-12 md:text-left mb-4 md:mb-0">
+                            <span class="inline-block px-3 py-1 bg-white text-ocean-600 font-bold text-xs rounded-full shadow-sm mb-2">Stage 2</span>
+                            <h3 class="font-outfit font-bold text-xl text-ocean-900">Riverine Transport to Coasts</h3>
+                            <p class="text-sm text-ocean-700 mt-2">1,000 major rivers worldwide act as high-speed conveyor belts carrying plastics directly into oceans.</p>
+                        </div>
+                        <!-- Central Bubble -->
+                        <div class="w-12 h-12 rounded-full bg-white border-4 border-ocean-400 text-ocean-600 flex items-center justify-center font-black text-lg shadow-lg z-20 group-hover:scale-125 group-hover:border-cyanGlow group-hover:bg-ocean-500 group-hover:text-white transition-all duration-300">
+                            2
+                        </div>
+                        <div class="w-full md:w-1/2 md:pr-12 mt-4 md:mt-0">
+                            <div id="timeline-detail-2" class="glass-panel p-6 rounded-2xl border-r-4 border-r-ocean-500 shadow-md">
+                                <p class="text-xs text-ocean-800 leading-relaxed font-medium">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mr-1"></i> Heavy monsoon seasons accelerate this river-to-sea debris transport by over 300%.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center group cursor-pointer" onclick="toggleTimeline(3)">
+                        <div class="w-full md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <span class="inline-block px-3 py-1 bg-white text-ocean-600 font-bold text-xs rounded-full shadow-sm mb-2">Stage 3</span>
+                            <h3 class="font-outfit font-bold text-xl text-ocean-900">Gyre Accumulation & Fragmentation</h3>
+                            <p class="text-sm text-ocean-700 mt-2">Ocean currents trap waste into massive floating garbage patches, breaking down into microplastics.</p>
+                        </div>
+                        <!-- Central Bubble -->
+                        <div class="w-12 h-12 rounded-full bg-white border-4 border-ocean-400 text-ocean-600 flex items-center justify-center font-black text-lg shadow-lg z-20 group-hover:scale-125 group-hover:border-cyanGlow group-hover:bg-ocean-500 group-hover:text-white transition-all duration-300">
+                            3
+                        </div>
+                        <div class="w-full md:w-1/2 md:pl-12 mt-4 md:mt-0">
+                            <div id="timeline-detail-3" class="glass-panel p-6 rounded-2xl border-l-4 border-l-ocean-500 shadow-md">
+                                <p class="text-xs text-ocean-800 leading-relaxed font-medium">
+                                    <i class="fa-solid fa-skull-crossbones text-rose-500 mr-1"></i> The Great Pacific Garbage Patch now spans an area three times the size of France.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAKE ACTION SECTION (Interactive & Spacious) -->
+    <section id="actions" class="py-24 px-6 bg-ocean-800 text-white relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="px-4 py-1.5 rounded-full bg-ocean-700 text-cyanGlow text-xs font-bold uppercase tracking-wider">
+                    Be Part Of The Solution
+                </span>
+                <h2 class="font-outfit font-black text-3xl sm:text-5xl text-white mt-4 mb-6">
+                    4 Actionable Steps You Can Take Today
+                </h2>
+                <p class="text-ocean-200 text-base sm:text-lg">
+                    Individual actions create collective power. Here is how you can make an immediate impact on ocean health.
+                </p>
+            </div>
+
+            <!-- Action Grid with Interactive Flip Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Action 1 -->
+                <div class="glass-dark-panel rounded-3xl p-8 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyanGlow/20 text-cyanGlow flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bottle-water"></i>
+                        </div>
+                        <h3 class="font-outfit font-bold text-xl text-white mb-3">Refuse Single-Use</h3>
+                        <p class="text-sm text-ocean-200 leading-relaxed">
+                            Replace disposable water bottles, bags, straws, and cutlery with durable reusable alternatives.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-ocean-700/60 text-xs text-cyanGlow font-semibold flex items-center gap-2">
+                        <span>Impact: High</span>
+                        <i class="fa-solid fa-arrow-right ml-auto"></i>
+                    </div>
+                </div>
+
+                <!-- Action 2 -->
+                <div class="glass-dark-panel rounded-3xl p-8 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyanGlow/20 text-cyanGlow flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-hands-holding-circle"></i>
+                        </div>
+                        <h3 class="font-outfit font-bold text-xl text-white mb-3">Coastal Cleanups</h3>
+                        <p class="text-sm text-ocean-200 leading-relaxed">
+                            Join local beach, river, or park cleanups to prevent litter from entering waterways.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-ocean-700/60 text-xs text-cyanGlow font-semibold flex items-center gap-2">
+                        <span>Impact: Immediate</span>
+                        <i class="fa-solid fa-arrow-right ml-auto"></i>
+                    </div>
+                </div>
+
+                <!-- Action 3 -->
+                <div class="glass-dark-panel rounded-3xl p-8 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyanGlow/20 text-cyanGlow flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-fish"></i>
+                        </div>
+                        <h3 class="font-outfit font-bold text-xl text-white mb-3">Choose Sustainable</h3>
+                        <p class="text-sm text-ocean-200 leading-relaxed">
+                            Support certified sustainable seafood practices that minimize destructive ghost gear loss.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-ocean-700/60 text-xs text-cyanGlow font-semibold flex items-center gap-2">
+                        <span>Impact: Long-term</span>
+                        <i class="fa-solid fa-arrow-right ml-auto"></i>
+                    </div>
+                </div>
+
+                <!-- Action 4 -->
+                <div class="glass-dark-panel rounded-3xl p-8 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyanGlow/20 text-cyanGlow flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="font-outfit font-bold text-xl text-white mb-3">Spread Awareness</h3>
+                        <p class="text-sm text-ocean-200 leading-relaxed">
+                            Share facts, stories, and conservation campaigns to inspire your community and peers.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-ocean-700/60 text-xs text-cyanGlow font-semibold flex items-center gap-2">
+                        <span>Impact: Exponential</span>
+                        <i class="fa-solid fa-arrow-right ml-auto"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Callout Banner to Instagram -->
+            <div class="mt-16 glass-dark-panel p-8 sm:p-12 rounded-3xl text-center relative overflow-hidden border border-cyanGlow/40">
+                <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                    <h3 class="font-outfit font-black text-2xl sm:text-4xl text-white">
+                        Stay Connected & Learn Daily
+                    </h3>
+                    <p class="text-ocean-200 text-sm sm:text-base">
+                        Follow <strong class="text-cyanGlow">@iqk.oceanpollution</strong> on Instagram for regular updates, visual infographics, and community initiatives protecting our oceans.
+                    </p>
+                    <div class="pt-2">
+                        <a href="https://www.instagram.com/iqk.oceanpollution?xtok=ODZ0dzN6dzM4dmxz&utm_source=qr" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-600 to-ocean-500 text-white font-bold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                            <span>Visit @iqk.oceanpollution</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-ocean-900 text-ocean-300 py-12 px-6 border-t border-ocean-800">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-ocean-500 flex items-center justify-center text-white text-sm">
+                    <i class="fa-solid fa-water"></i>
+                </div>
+                <span class="font-outfit font-bold text-lg text-white">BLUE HORIZON</span>
+            </div>
+
+            <p class="text-xs text-ocean-400 text-center">
+                Dedicated to marine ecosystem preservation. Inspired by content from 
+                <a href="https://www.instagram.com/iqk.oceanpollution?xtok=ODZ0dzN6dzM4dmxz&utm_source=qr" target="_blank" rel="noopener noreferrer" class="text-cyanGlow hover:underline">@iqk.oceanpollution</a>.
+            </p>
+
+            <div class="flex items-center gap-4 text-xs font-semibold">
+                <a href="#narrative" class="hover:text-white transition-colors">Crisis</a>
+                <span>•</span>
+                <a href="#timeline" class="hover:text-white transition-colors">Timeline</a>
+                <span>•</span>
+                <a href="#actions" class="hover:text-white transition-colors">Actions</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Canvas Particle Bubbles Script -->
+    <script>
+        const canvas = document.getElementById('ocean-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Bubble Particle Generator
+        class Bubble {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.radius = Math.random() * 5 + 2;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.alpha = Math.random() * 0.4 + 0.1;
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.05 + 0.01;
+            }
+
+            update() {
+                this.y -= this.speed;
+                this.wobble += this.wobbleSpeed;
+                this.x += Math.sin(this.wobble) * 0.5;
+
+                if (this.y < -20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.fill();
+                ctx.strokeStyle = `rgba(0, 242, 254, ${this.alpha * 0.8})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
+
+        const bubbles = Array.from({ length: 45 }, () => new Bubble());
+
+        function animateBubbles() {
+            ctx.clearRect(0, 0, width, height);
+            bubbles.forEach(bubble => {
+                bubble.update();
+                bubble.draw();
+            });
+            requestAnimationFrame(animateBubbles);
+        }
+
+        window.onload = function() {
+            animateBubbles();
+        };
+
+        // Interactive Timeline Accordion Functionality
+        function toggleTimeline(id) {
+            const detail = document.getElementById(`timeline-detail-${id}`);
+            if (detail.classList.contains('hidden')) {
+                detail.classList.remove('hidden');
+            } else {
+                detail.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
